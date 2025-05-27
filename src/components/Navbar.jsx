@@ -23,20 +23,26 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
-        <Link className="navbar-brand" to="/">FaciliTec</Link>
+      <nav className="navbar navbar-expand-lg px-3">
+        <Link className="navbar-brand" to="/"> <img src="/src/assets/logo.png" alt="" /></Link>
+
+ <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+      
+
         <div className="collapse navbar-collapse justify-content-end">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to="/cart">Carrito</Link>
+              <Link className="nav-link" to="/cart"><img src="/src/assets/carrito.png" alt="" /></Link>
             </li>
             <li className="nav-item">
               <button
-                className="btn btn-outline-primary"
+                className="btn"
                 data-bs-toggle="modal"
-                data-bs-target="#loginModal"
-              >
-                Login
+                data-bs-target="#loginModal">
+                <img  className="login-img" src="/src/assets/cuenta.png" alt="" />
               </button>
             </li>
           </ul>

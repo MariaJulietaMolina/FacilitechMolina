@@ -37,6 +37,6 @@ function App() {
 export default App;
 
 
-const isLoggedIn = true; // false para probar protección
+const isLoggedIn = true; // SIN PASS, NI USER
 
 <Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/" />} />;
