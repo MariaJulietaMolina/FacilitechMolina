@@ -3,11 +3,14 @@ const Cart = ({ carrito }) => {
 
   const handleComprar = () => {
     alert("Gracias por tu compra 🎉");
-    // Acá podrías luego vaciar el carrito, redirigir o enviar datos al backend
+  
+  const Cart = ({ carrito, eliminarDelCarrito }) => {
+  const total = carrito.reduce((acc, item) => acc + item.price, 0);
+
   };
 
   return (
-    <div className="container mt-4">
+ <div className="container mt-4">
       <h2>Carrito de compras</h2>
       {carrito.length === 0 ? (
         <p>El carrito está vacío.</p>
@@ -15,16 +18,21 @@ const Cart = ({ carrito }) => {
         <>
           <ul className="list-group">
             {carrito.map((item, index) => (
-              <li key={index} className="list-group-item d-flex align-items-center">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  style={{ width: "50px", height: "50px", objectFit: "contain", marginRight: "1rem" }}
-                />
-                <div className="flex-grow-1">
-                  <strong>{item.title}</strong>
-                  <p className="mb-0">${item.price.toFixed(2)}</p>
+              <li key={index} className="list-group-item d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    style={{ width: "50px", height: "50px", objectFit: "contain", marginRight: "1rem" }}
+                  />
+                  <div>
+                    <strong>{item.title}</strong>
+                    <p className="mb-0">${item.price.toFixed(2)}</p>
+                  </div>
                 </div>
+                <button className="btn btn-danger btn-sm" onClick={() => eliminarDelCarrito(item.id)}>
+                  Borrar
+                </button>
               </li>
             ))}
           </ul>

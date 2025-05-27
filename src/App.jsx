@@ -9,6 +9,13 @@ import { useState } from "react";
 function App() {
   const [carrito, setCarrito] = useState([]);
   const isLoggedIn = true;
+  
+  const eliminarDelCarrito = (id) => {
+  const nuevoCarrito = carrito.filter(item => item.id !== id);
+  setCarrito(nuevoCarrito);
+
+
+};
 
   return (
     <Routes>
@@ -31,12 +38,11 @@ function App() {
         />
       </Route>
     </Routes>
+
   );
 }
 
 export default App;
 
 
-const isLoggedIn = true; // SIN PASS, NI USER
 
-<Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/" />} />;
