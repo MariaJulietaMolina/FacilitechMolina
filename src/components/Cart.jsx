@@ -1,16 +1,12 @@
-const Cart = ({ carrito }) => {
+const Cart = ({ carrito, eliminarDelCarrito }) => {
   const total = carrito.reduce((acc, item) => acc + item.price, 0);
 
   const handleComprar = () => {
     alert("Gracias por tu compra 🎉");
-  
-  const Cart = ({ carrito, eliminarDelCarrito }) => {
-  const total = carrito.reduce((acc, item) => acc + item.price, 0);
-
   };
 
   return (
- <div className="container mt-4">
+    <div className="container mt-4">
       <h2>Carrito de compras</h2>
       {carrito.length === 0 ? (
         <p>El carrito está vacío.</p>
@@ -50,4 +46,3 @@ const Cart = ({ carrito }) => {
 };
 
 export default Cart;
-

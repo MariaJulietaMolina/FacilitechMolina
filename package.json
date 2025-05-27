@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://TU_USUARIO.github.io/ecommerce-electrodomesticos",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -27,3 +28,4 @@
     "vite": "^6.3.5"
   }
 }
+
