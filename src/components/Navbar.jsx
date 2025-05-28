@@ -35,14 +35,14 @@ const Navbar = () => {
 
         <form className="d-flex" role="search">
           <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-          <button className="btn btn-outline-success" type="submit">Search</button>
+          <button className="btn btn-outline-secondary" type="submit">Search</button>
         </form>
 
         <div className="collapse navbar-collapse justify-content-end">
           <ul className="navbar-nav">
             <li className="nav-item">
               <Link className="nav-link" to="/cart">
-                <img src={carrito} alt="Carrito" />
+                <img className="login-img" src={carrito} alt="/carrito" />
               </Link>
             </li>
             <li className="nav-item">
