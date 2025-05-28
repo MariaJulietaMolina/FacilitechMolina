@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
+
+import logo from "../assets/logo.png";
+import carrito from "../assets/carrito.png";
+import cuenta from "../assets/cuenta.png";
+
 const Navbar = () => {
 
   const handleLogin = (e) => {
@@ -24,31 +29,33 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar navbar-expand-lg px-3">
-        <Link className="navbar-brand" to="/"> <img src="/src/assets/logo.png" alt="" /></Link>
+        <Link className="navbar-brand" to="/">
+          <img src={logo} alt="Logo" />
+        </Link>
 
- <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-      
+        <form className="d-flex" role="search">
+          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <button className="btn btn-outline-success" type="submit">Search</button>
+        </form>
 
         <div className="collapse navbar-collapse justify-content-end">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to="/cart"><img src="/src/assets/carrito.png" alt="" /></Link>
+              <Link className="nav-link" to="/cart">
+                <img src={carrito} alt="Carrito" />
+              </Link>
             </li>
             <li className="nav-item">
               <button
                 className="btn"
                 data-bs-toggle="modal"
                 data-bs-target="#loginModal">
-                <img  className="login-img" src="/src/assets/cuenta.png" alt="" />
+                <img className="login-img" src={cuenta} alt="Cuenta" />
               </button>
             </li>
           </ul>
         </div>
       </nav>
-
 
       <div className="modal fade" id="loginModal" tabIndex="-1" aria-hidden="true">
         <div className="modal-dialog">
