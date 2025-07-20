@@ -1,48 +1,83 @@
+import { FaTrashAlt, FaCheckCircle } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Cart = ({ carrito, eliminarDelCarrito }) => {
-  const total = carrito.reduce((acc, item) => acc + item.price, 0);
+  const total = carrito.reduce((acc, item) => acc + (Number(item.price) || 0), 0);
 
   const handleComprar = () => {
-    alert("Gracias por tu compra 🎉");
+    toast.success("✅ Gracias por tu compra 🎉", {
+      position: "top-right",
+      autoClose: 3000,
+    });
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Carrito de compras</h2>
+    <div className="container mt-5">
+      <h2 className="mb-4 text-center">🛒 Carrito de Compras</h2>
+
       {carrito.length === 0 ? (
-        <p>El carrito está vacío.</p>
+        <div className="alert alert-info text-center">
+          El carrito está vacío. ¡Agrega productos para comenzar!
+        </div>
       ) : (
         <>
-          <ul className="list-group">
+          <ul className="list-group shadow-sm">
             {carrito.map((item, index) => (
-              <li key={index} className="list-group-item d-flex align-items-center justify-content-between">
+              <li
+                key={index}
+                className="list-group-item d-flex align-items-center justify-content-between"
+              >
                 <div className="d-flex align-items-center">
                   <img
-                    src={item.image}
-                    alt={item.title}
-                    style={{ width: "50px", height: "50px", objectFit: "contain", marginRight: "1rem" }}
+                    src={item.image || "https://via.placeholder.com/100"}
+                    alt={item.title || "Producto"}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      objectFit: "contain",
+                      marginRight: "1rem",
+                    }}
                   />
                   <div>
-                    <strong>{item.title}</strong>
-                    <p className="mb-0">${item.price.toFixed(2)}</p>
+                    <strong>{item.title || "Sin título"}</strong>
+                    <p className="mb-0 text-muted">
+                      ${Number(item.price || 0).toFixed(2)}
+                    </p>
                   </div>
                 </div>
-                <button className="btn btn-danger btn-sm" onClick={() => eliminarDelCarrito(item.id)}>
-                  Borrar
+                <button
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={() => eliminarDelCarrito(item.id)}
+                  aria-label="Eliminar del carrito"
+                >
+                  <FaTrashAlt /> Eliminar
                 </button>
               </li>
             ))}
           </ul>
 
-          <div className="mt-4 d-flex justify-content-between align-items-center">
-            <h4>Total: ${total.toFixed(2)}</h4>
-            <button className="btn btn-success" onClick={handleComprar}>
-              Comprar
+          <div className="mt-4 p-3 border rounded shadow-sm d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <h4 className="mb-3 mb-md-0">
+              Total: <span className="text-success">${total.toFixed(2)}</span>
+            </h4>
+            <button
+              className="btn btn-success btn-lg"
+              onClick={handleComprar}
+              aria-label="Confirmar compra"
+            >
+              <FaCheckCircle className="me-2" />
+              Confirmar Compra
             </button>
           </div>
         </>
       )}
+
+      <ToastContainer />
     </div>
   );
 };
 
 export default Cart;
+
+

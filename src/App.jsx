@@ -16,10 +16,14 @@ function App() {
   const { user } = useAuthContext();
 
  
-  const eliminarDelCarrito = (id) => {
-    const nuevoCarrito = carrito.filter((item) => item.id !== id);
+const eliminarDelCarrito = (id) => {
+  const index = carrito.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    const nuevoCarrito = [...carrito];
+    nuevoCarrito.splice(index, 1);
     setCarrito(nuevoCarrito);
-  };
+  }
+};
 
   
   const agregarProducto = async (producto) => {
