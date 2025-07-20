@@ -36,7 +36,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="Logo"
-            height="40"
+            height="60"
             style={{ cursor: "pointer" }}
           />
         </button>
