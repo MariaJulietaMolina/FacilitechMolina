@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext"; 
+import { useAuthContext } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 import carrito from "../assets/carrito.png";
 import cuenta from "../assets/cuenta.png";
-import Login from './Login'; 
+import Login from './Login';
 
 const Navbar = () => {
-  const { user, logout } = useAuthContext(); 
+  const { user, logout } = useAuthContext();
 
-  
   const cerrarModal = () => {
     const modalEl = document.getElementById("loginModal");
     let modalInstance = window.bootstrap.Modal.getInstance(modalEl);
@@ -29,35 +28,57 @@ const Navbar = () => {
           </Link>
 
           <form className="d-flex" role="search">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-outline-secondary" type="submit">Search</button>
+            <input
+              className="form-control me-2"
+              type="search"
+              placeholder="Buscar"
+              aria-label="Buscar"
+            />
+            <button className="btn btn-outline-secondary" type="submit">
+              Buscar
+            </button>
           </form>
 
           <div className="btn-group">
-            <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              Categorias
+            <button
+              type="button"
+              className="btn btn-secondary dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Categorías
             </button>
             <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#"> Novedades </a></li>
-              <li><a className="dropdown-item" href="#"> Auriculares </a></li>
-              <li><a className="dropdown-item" href="#"> Parlantes </a></li>
-              <li><a className="dropdown-item" href="#"> Higiene personal </a></li>
+              <li><a className="dropdown-item" href="#">Novedades</a></li>
+              <li><a className="dropdown-item" href="#">Auriculares</a></li>
+              <li><a className="dropdown-item" href="#">Parlantes</a></li>
+              <li><a className="dropdown-item" href="#">Higiene personal</a></li>
             </ul>
           </div>
 
           <div className="collapse navbar-collapse justify-content-end">
-            <ul className="navbar-nav">
+            <ul className="navbar-nav align-items-center">
               <li className="nav-item">
-                <Link className="nav-link" to="/carrito">
-                  <img className="login-img" src={carrito} alt="/carrito" />
+                <Link className="nav-link" to="/cart">
+                  <img className="login-img" src={carrito} alt="Carrito" />
                 </Link>
               </li>
+
+              {user && (
+                <li className="nav-item">
+                  <Link to="/admin" className="btn btn-outline-warning mx-2">
+                    ⚙️ Admin
+                  </Link>
+                </li>
+              )}
+
               <li className="nav-item">
                 {!user ? (
                   <button
                     className="btn"
                     data-bs-toggle="modal"
-                    data-bs-target="#loginModal">
+                    data-bs-target="#loginModal"
+                  >
                     <img className="login-img" src={cuenta} alt="Cuenta" />
                   </button>
                 ) : (
@@ -70,16 +91,20 @@ const Navbar = () => {
           </div>
         </nav>
 
-        
+        {/* MODAL LOGIN */}
         <div className="modal fade" id="loginModal" tabIndex="-1" aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Iniciar sesión</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Cerrar"
+                ></button>
               </div>
               <div className="modal-body">
-               
                 <Login onClose={cerrarModal} />
               </div>
             </div>

@@ -24,7 +24,7 @@ function App() {
   
   const agregarProducto = async (producto) => {
     try {
-      const respuesta = await fetch("https://mockapi.io/clone/6830f5966205ab0d6c3ae2ba", {
+      const respuesta = await fetch("https://687c5fc4b4bc7cfbda88de39.mockapi.io/api/v1/productos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
