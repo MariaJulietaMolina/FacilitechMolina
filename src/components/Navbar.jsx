@@ -7,7 +7,8 @@ import { ProductsContext } from "../context/ProductsContext";
 
 const Navbar = () => {
   const { user, logout } = useAuthContext();
-  const { busqueda, setBusqueda } = useContext(ProductsContext);
+  const { busqueda, setBusqueda, buscarProductos } =
+    useContext(ProductsContext);
 
   const cerrarModal = () => {
     const modalEl = document.getElementById("loginModal");
@@ -20,15 +21,26 @@ const Navbar = () => {
     document.body.classList.remove("modal-open");
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    buscarProductos();
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        
-        <Link className="navbar-brand me-3" to="/">
-          <img src={logo} alt="Logo" height="40" />
-        </Link>
+        <button
+          className="navbar-brand me-3 btn btn-link p-0 border-0"
+          onClick={() => window.location.reload()}
+        >
+          <img
+            src={logo}
+            alt="Logo"
+            height="40"
+            style={{ cursor: "pointer" }}
+          />
+        </button>
 
-        
         <button
           className="navbar-toggler"
           type="button"
@@ -41,18 +53,16 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        
         <div className="collapse navbar-collapse" id="navbarContent">
           <ul className="navbar-nav w-100 align-items-lg-center flex-lg-row flex-column">
-            
             <li className="nav-item w-100 w-lg-50 mx-lg-auto my-2 my-lg-0">
               <form
                 className="d-flex w-100"
                 role="search"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit}
               >
                 <input
-                 className="form-control me-2 me-lg-5"
+                  className="form-control me-2 me-lg-5"
                   type="search"
                   placeholder="Buscar"
                   aria-label="Buscar"
@@ -65,7 +75,6 @@ const Navbar = () => {
               </form>
             </li>
 
-            
             <li className="nav-item dropdown my-2 my-lg-0 ms-lg-3">
               <button
                 className="btn btn-secondary dropdown-toggle w-100"
@@ -74,32 +83,47 @@ const Navbar = () => {
                 Categorías
               </button>
               <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#">Novedades</a></li>
-                <li><a className="dropdown-item" href="#">Auriculares</a></li>
-                <li><a className="dropdown-item" href="#">Parlantes</a></li>
-                <li><a className="dropdown-item" href="#">Higiene personal</a></li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Novedades
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Auriculares
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Parlantes
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Higiene personal
+                  </a>
+                </li>
               </ul>
             </li>
 
-            
             {user ? (
               <>
                 <li className="nav-item my-2 my-lg-0 ms-lg-3">
-                  <Link to="/admin" className="btn btn-outline-warning w-100">
+                  <Link to="/admin" className="btn btn-outline-info w-100">
                     Admin
                   </Link>
                 </li>
                 <li className="nav-item my-2 my-lg-0 ms-lg-3">
-                  <Link to="/cart" className="btn btn-outline-primary w-100">
+                  <Link to="/cart" className="btn btn-outline-warning w-100">
                     Carrito
                   </Link>
                 </li>
                 <li className="nav-item my-2 my-lg-0 ms-lg-3">
                   <button
-                    className="btn btn-outline-danger w-100"
+                    className="btn btn-outline-danger w-100 d-flex justify-content-center align-items-center"
                     onClick={logout}
                   >
-                    Cerrar sesión
+                    <span style={{ whiteSpace: "pre" }}>Cerrar sesión</span>
                   </button>
                 </li>
               </>
@@ -118,7 +142,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      
       <div
         className="modal fade"
         id="loginModal"

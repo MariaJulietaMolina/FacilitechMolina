@@ -4,14 +4,16 @@ export const ProductsContext = createContext();
 
 export const ProductsProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
+  const [productosFiltrados, setProductosFiltrados] = useState([]);
+  const [busqueda, setBusqueda] = useState("");
   const [loading, setLoading] = useState(true);
 
-  
   const obtenerProductos = async () => {
     try {
       const res = await fetch("https://687c5fc4b4bc7cfbda88de39.mockapi.io/api/v1/productos");
       const data = await res.json();
       setProductos(data);
+      setProductosFiltrados(data);
     } catch (error) {
       console.error("❌ Error al obtener productos:", error);
     } finally {
@@ -23,6 +25,17 @@ export const ProductsProvider = ({ children }) => {
     obtenerProductos();
   }, []);
 
+  const buscarProductos = () => {
+    const palabra = busqueda.trim().toLowerCase();
+    if (palabra.length >= 3) {
+      const resultados = productos.filter(p =>
+        p.title?.toLowerCase().includes(palabra)
+      );
+      setProductosFiltrados(resultados);
+    } else {
+      setProductosFiltrados(productos);
+    }
+  };
 
   const agregarProducto = async (producto) => {
     try {
@@ -32,13 +45,14 @@ export const ProductsProvider = ({ children }) => {
         body: JSON.stringify(producto),
       });
       const nuevo = await res.json();
-      setProductos([...productos, nuevo]);
+      const actualizados = [...productos, nuevo];
+      setProductos(actualizados);
+      setProductosFiltrados(actualizados);
     } catch (error) {
       console.error("❌ Error al agregar producto:", error);
     }
   };
 
- 
   const editarProducto = async (productoActualizado) => {
     try {
       const res = await fetch(`https://687c5fc4b4bc7cfbda88de39.mockapi.io/api/v1/productos/${productoActualizado.id}`, {
@@ -47,13 +61,14 @@ export const ProductsProvider = ({ children }) => {
         body: JSON.stringify(productoActualizado),
       });
       const actualizado = await res.json();
-      setProductos(productos.map(p => p.id === actualizado.id ? actualizado : p));
+      const actualizados = productos.map(p => p.id === actualizado.id ? actualizado : p);
+      setProductos(actualizados);
+      setProductosFiltrados(actualizados);
     } catch (error) {
       console.error("❌ Error al editar producto:", error);
     }
   };
 
-  
   const eliminarProducto = async (id) => {
     const confirmar = window.confirm("¿Estás segura/o de eliminar este producto?");
     if (!confirmar) return;
@@ -62,7 +77,9 @@ export const ProductsProvider = ({ children }) => {
       await fetch(`https://687c5fc4b4bc7cfbda88de39.mockapi.io/api/v1/productos/${id}`, {
         method: "DELETE",
       });
-      setProductos(productos.filter(p => p.id !== id));
+      const actualizados = productos.filter(p => p.id !== id);
+      setProductos(actualizados);
+      setProductosFiltrados(actualizados);
     } catch (error) {
       console.error("❌ Error al eliminar producto:", error);
     }
@@ -72,7 +89,11 @@ export const ProductsProvider = ({ children }) => {
     <ProductsContext.Provider
       value={{
         productos,
+        productosFiltrados,
         loading,
+        busqueda,
+        setBusqueda,
+        buscarProductos,
         agregarProducto,
         editarProducto,
         eliminarProducto,
