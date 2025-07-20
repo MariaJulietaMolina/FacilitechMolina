@@ -6,10 +6,15 @@ const ProductList = ({ agregarAlCarrito }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products") // Temporal, luego usás tu propia API
+    
+    fetch("https://mockapi.io/clone/6830f5966205ab0d6c3ae2ba")
       .then(res => res.json())
       .then(data => {
-        setProductos(data);
+        setProductos(data);  
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error al cargar productos:", error);
         setLoading(false);
       });
   }, []);
@@ -19,7 +24,7 @@ const ProductList = ({ agregarAlCarrito }) => {
   return (
     <div className="container mt-4">
       <div className="row">
-         {productos.map(producto => (
+        {productos.map(producto => (
           <ProductCard
             key={producto.id}
             producto={producto}
@@ -32,3 +37,4 @@ const ProductList = ({ agregarAlCarrito }) => {
 };
 
 export default ProductList;
+

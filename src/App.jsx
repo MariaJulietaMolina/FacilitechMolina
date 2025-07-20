@@ -1,26 +1,55 @@
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { useAuthContext } from "./context/AuthContext";
+
+
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./components/Cart";
 import Admin from "./pages/Admin";
 import Layout from "./components/Layout";
-import ProtectedRoute from "./components/ProtectedRoute"; 
-import { useState } from "react";
-import { useAuthContext } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import FormularioProducto from "./components/FormularioProducto"; 
 
 function App() {
   const [carrito, setCarrito] = useState([]);
-  const { user } = useAuthContext(); 
+  const { user } = useAuthContext();
 
+ 
   const eliminarDelCarrito = (id) => {
     const nuevoCarrito = carrito.filter((item) => item.id !== id);
     setCarrito(nuevoCarrito);
   };
 
+  
+  const agregarProducto = async (producto) => {
+    try {
+      const respuesta = await fetch("https://mockapi.io/clone/6830f5966205ab0d6c3ae2ba", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(producto),
+      });
+
+      if (!respuesta.ok) {
+        throw new Error("Error al agregar el producto");
+      }
+
+      const data = await respuesta.json();
+      alert("✅ Producto agregado correctamente");
+      console.log("Producto agregado:", data);
+    } catch (error) {
+      alert("❌ Hubo un error al agregar el producto");
+      console.error(error);
+    }
+  };
+
   return (
     <Routes>
-     
+      
       <Route path="/" element={<Layout />}>
+        
        
         <Route
           index
@@ -39,20 +68,33 @@ function App() {
           }
         />
 
-        
+       
         <Route
           path="/cart"
           element={
-            <Cart carrito={carrito} eliminarDelCarrito={eliminarDelCarrito} />
+            <Cart
+              carrito={carrito}
+              eliminarDelCarrito={eliminarDelCarrito}
+            />
           }
         />
 
-        
+       
         <Route
           path="/admin"
           element={
             <ProtectedRoute>
               <Admin />
+            </ProtectedRoute>
+          }
+        />
+
+      
+        <Route
+          path="/admin/nuevo-producto"
+          element={
+            <ProtectedRoute>
+              <FormularioProducto onAgregar={agregarProducto} />
             </ProtectedRoute>
           }
         />
@@ -62,3 +104,4 @@ function App() {
 }
 
 export default App;
+
