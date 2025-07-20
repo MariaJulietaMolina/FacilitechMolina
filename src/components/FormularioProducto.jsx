@@ -1,13 +1,35 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { ProductsContext } from "../context/ProductsContext";
+import { useNavigate, useLocation } from "react-router-dom";
 
-function FormularioProducto({ onAgregar }) {
+function FormularioProducto() {
+  const { agregarProducto, editarProducto } = useContext(ProductsContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const productoInicial = location.state?.producto || null;
+
   const [producto, setProducto] = useState({
-    nombre: "",
-    precio: "",
-    descripcion: "",
+    id: "",
+    title: "",
+    price: "",
+    description: "",
+    image: "",
   });
 
   const [errores, setErrores] = useState({});
+
+  useEffect(() => {
+    if (productoInicial) {
+      setProducto({
+        id: productoInicial.id || "",
+        title: productoInicial.title || "",
+        price: productoInicial.price || "",
+        description: productoInicial.description || "",
+        image: productoInicial.image || "",
+      });
+    }
+  }, [productoInicial]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,15 +38,14 @@ function FormularioProducto({ onAgregar }) {
 
   const validarFormulario = () => {
     const nuevosErrores = {};
-
-    if (!producto.nombre.trim()) {
-      nuevosErrores.nombre = "El nombre es obligatorio.";
+    if (!producto.title.trim()) {
+      nuevosErrores.title = "El nombre es obligatorio.";
     }
-    if (!producto.precio || producto.precio <= 0) {
-      nuevosErrores.precio = "El precio debe ser mayor a 0.";
+    if (!producto.price || producto.price <= 0) {
+      nuevosErrores.price = "El precio debe ser mayor a 0.";
     }
-    if (!producto.descripcion.trim() || producto.descripcion.length < 10) {
-      nuevosErrores.descripcion = "La descripción debe tener al menos 10 caracteres.";
+    if (!producto.description.trim() || producto.description.length < 10) {
+      nuevosErrores.description = "La descripción debe tener al menos 10 caracteres.";
     }
 
     setErrores(nuevosErrores);
@@ -36,52 +57,70 @@ function FormularioProducto({ onAgregar }) {
 
     if (!validarFormulario()) return;
 
-    try {
-      const respuesta = await fetch("https://mockapi.io/api/v1/productos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(producto),
-      });
-
-      if (!respuesta.ok) throw new Error("Error al agregar el producto");
-
-      const data = await respuesta.json();
+    if (productoInicial) {
+      await editarProducto(producto);
+      alert("✅ Producto editado correctamente");
+    } else {
+      await agregarProducto(producto);
       alert("✅ Producto agregado correctamente");
-
-      
-      setProducto({ nombre: "", precio: "", descripcion: "" });
-      setErrores({});
-    } catch (error) {
-      alert("❌ Hubo un error al agregar el producto");
-      console.error(error);
     }
+
+    navigate("/admin");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Agregar Producto</h2>
+    <form onSubmit={handleSubmit} className="container mt-4 p-4 border rounded shadow">
+      <h2>{productoInicial ? "Editar Producto" : "Agregar Producto"}</h2>
 
-      <div>
-        <label>Nombre:</label>
-        <input type="text" name="nombre" value={producto.nombre} onChange={handleChange} />
-        {errores.nombre && <p style={{ color: "red" }}>{errores.nombre}</p>}
+      <div className="mb-3">
+        <label className="form-label">Nombre:</label>
+        <input
+          type="text"
+          name="title"
+          className="form-control"
+          value={producto.title}
+          onChange={handleChange}
+        />
+        {errores.title && <p className="text-danger">{errores.title}</p>}
       </div>
 
-      <div>
-        <label>Precio:</label>
-        <input type="number" name="precio" value={producto.precio} onChange={handleChange} />
-        {errores.precio && <p style={{ color: "red" }}>{errores.precio}</p>}
+      <div className="mb-3">
+        <label className="form-label">Precio:</label>
+        <input
+          type="number"
+          name="price"
+          className="form-control"
+          value={producto.price}
+          onChange={handleChange}
+        />
+        {errores.price && <p className="text-danger">{errores.price}</p>}
       </div>
 
-      <div>
-        <label>Descripción:</label>
-        <textarea name="descripcion" value={producto.descripcion} onChange={handleChange} />
-        {errores.descripcion && <p style={{ color: "red" }}>{errores.descripcion}</p>}
+      <div className="mb-3">
+        <label className="form-label">Descripción:</label>
+        <textarea
+          name="description"
+          className="form-control"
+          value={producto.description}
+          onChange={handleChange}
+        />
+        {errores.description && <p className="text-danger">{errores.description}</p>}
       </div>
 
-      <button type="submit">Agregar Producto</button>
+      <div className="mb-3">
+        <label className="form-label">Imagen (URL):</label>
+        <input
+          type="text"
+          name="image"
+          className="form-control"
+          value={producto.image}
+          onChange={handleChange}
+        />
+      </div>
+
+      <button type="submit" className="btn btn-primary">
+        {productoInicial ? "Actualizar" : "Agregar"} Producto
+      </button>
     </form>
   );
 }
