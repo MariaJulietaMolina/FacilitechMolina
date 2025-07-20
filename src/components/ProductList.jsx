@@ -6,7 +6,7 @@ const ProductList = ({ agregarAlCarrito }) => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [paginaActual, setPaginaActual] = useState(1);
-  const productosPorPagina = 3;
+  const productosPorPagina = 9;
 
   useEffect(() => {
     fetch("https://687c5fc4b4bc7cfbda88de39.mockapi.io/api/v1/productos")

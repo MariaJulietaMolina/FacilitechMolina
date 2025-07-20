@@ -9,7 +9,7 @@ const Admin = () => {
   const { productos, loading, eliminarProducto } = useContext(ProductsContext);
   const navigate = useNavigate();
   const [paginaActual, setPaginaActual] = useState(1);
-  const productosPorPagina = 3;
+  const productosPorPagina = 9;
 
   const totalPaginas = Math.ceil(productos.length / productosPorPagina);
   const indexUltimo = paginaActual * productosPorPagina;
