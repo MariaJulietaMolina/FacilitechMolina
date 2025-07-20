@@ -1,33 +1,35 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./components/Cart";
 import Admin from "./pages/Admin";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute"; 
 import { useState } from "react";
+import { useAuthContext } from "./context/AuthContext";
 
 function App() {
   const [carrito, setCarrito] = useState([]);
-  const isLoggedIn = true;
+  const { user } = useAuthContext(); 
 
-const eliminarDelCarrito = (id) => {
-  const index = carrito.findIndex(item => item.id === id);
-  if (index !== -1) {
-    const nuevoCarrito = [...carrito];
-    nuevoCarrito.splice(index, 1); 
+  const eliminarDelCarrito = (id) => {
+    const nuevoCarrito = carrito.filter((item) => item.id !== id);
     setCarrito(nuevoCarrito);
-  }
   };
 
   return (
     <Routes>
+     
       <Route path="/" element={<Layout />}>
+       
         <Route
           index
           element={
             <Home agregarAlCarrito={(item) => setCarrito([...carrito, item])} />
           }
         />
+
+        
         <Route
           path="/product/:id"
           element={
@@ -36,15 +38,23 @@ const eliminarDelCarrito = (id) => {
             />
           }
         />
+
+        
         <Route
           path="/cart"
           element={
             <Cart carrito={carrito} eliminarDelCarrito={eliminarDelCarrito} />
           }
         />
+
+        
         <Route
           path="/admin"
-          element={isLoggedIn ? <Admin /> : <Navigate to="/" />}
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
         />
       </Route>
     </Routes>
